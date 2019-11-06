@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+{% block pagetitle %}
+Ubah Specs - {{ App.params.site_name }}
+{% endblock %}
+
+{% block content %}
+<div id="main_wrapper">
+    <div class="page_bar clearfix">
+        <div class="row">
+            <div class="col-sm-10">
+                <h1 class="page_title">Ubah Specs</h1>
+                <p class="text-muted">Halaman ubah data Specs.</p>
+            </div>
+            <div class="col-sm-2 text-right">
+                <a class="btn btn-default" href="{{ 'handphone/specs/view' | link }}">Daftar Specs</a>
+            </div>
+        </div>
+    </div>
+    <div class="page_content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Kolom bertanda <span class="red">*</span> tidak boleh dikosongi
+                        </div>
+                        <div class="panel-body">
+                            {% if message %}
+                            <div class="alert {% if success %}alert-success{% else %}alert-warning{% endif %}">{{ message | raw }}</div>
+                            {% endif %}
+                            <form method="post" name="specs-create" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Title <span class="red">*</span></label>
+                                    <div class="col-sm-6">
+                                        <input name="HandphoneSpecs[title]" type="text" class="form-control {% if errors.title %}error{% endif %}" value="{{ model.title }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Type <span class="red">*</span></label>
+                                    <div class="col-sm-6">
+                                        {% set type_list = ['text', 'integer', 'double'] %}
+                                        {% for it, type_name in type_list %}
+                                        <label class="radio-inline">
+                                            <input type="radio" name="HandphoneSpecs[type]" id="optionsRadios1" value="{{ type_name }}" {% if model.type == type_name %}checked="checked"{% endif %}>
+                                            {{ type_name | title }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Unit</label>
+                                    <div class="col-sm-6">
+                                        <input name="HandphoneSpecs[unit]" type="text" class="form-control {% if errors.unit %}error{% endif %}" value="{{ model.unit }}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Description</label>
+                                    <div class="col-sm-6">
+                                        <textarea name="HandphoneSpecs[description]" class="form-control {% if errors.description %}error{% endif %}">{{ model.description }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">&nbsp;</label>
+                                    <div class="col-sm-10">
+                                        <input type="submit" name="Submit" value="Simpan" class="btn btn-success btn-submit">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'partial/right_menu.html' %}
+{% endblock %}
+{% block endbodyjs %}
+<script type="text/javascript">
+    $(function(){
+        var success_message = "{{ message }}";
+        var id = parseInt("{{ model.id }}");
+        if (success_message && success_message.length > 0 && id > 0) {
+            setTimeout(function () {
+                window.location.href = "{{ 'handphone/specs/update' | link }}/"+ id;
+            }, 2000);
+        }
+    });
+</script>
+{% endblock %}

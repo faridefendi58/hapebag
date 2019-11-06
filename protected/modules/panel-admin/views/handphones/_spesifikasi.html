@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-6">
+        <p>Kolom bertanda <span class="red">*</span> tidak boleh dikosongi</p>
+        {% if message %}
+        <div class="alert {% if success %}alert-success{% else %}alert-warning{% endif %}">{{ message | raw }}</div>
+        {% endif %}
+        <form method="post" name="specs-create">
+            <div class="form-group">
+                {% set specs = App.call.model("\\ExtensionsModel\\HandphoneSpecsModel", 'getData', {}) %}
+                <label class="control-label">Specifications <span class="red">*</span></label>
+                <select name="HandphoneSeriesSpecs[specs_id]" class="form-control">
+                    {% for b, spec in specs %}
+                    <option value="{{ spec.id }}" {% if model.specs_id == spec.id %}selected="selected"{% endif %}>{{ spec.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Specs Value <span class="red">*</span></label>
+                <input name="HandphoneSeriesSpecs[specs_value]" type="text" class="form-control {% if errors.specs_value %}error{% endif %}" value="{{ model.specs_value }}">
+            </div>
+            <div class="form-group">
+                <label class="control-label">Notes <span class="red">*</span></label>
+                <textarea name="HandphoneSeriesSpecs[meta_description]" class="form-control {% if errors.meta_description %}error{% endif %}">{{ model.meta_description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" name="Submit" value="Simpan" class="btn btn-success btn-submit">
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6"></div>
+</div>
